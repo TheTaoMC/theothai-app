@@ -1,6 +1,6 @@
 export async function GET() {
     console.log('test');
     return Response.json({
-        name: 'THEO test001'
+        title: 'POP ART'
     })
 }
