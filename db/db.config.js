@@ -9,6 +9,7 @@ const config = {
     connectionTimeout: 30000, // Set connection timeout to 30 seconds
     options: {
         trustServerCertificate: true,
+        encrypt: true
     },
 };
 
