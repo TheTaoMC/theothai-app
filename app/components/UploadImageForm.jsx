@@ -2,6 +2,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from 'next/navigation'
 
 export default function UploadImageForm() {
   const [image, setImage] = useState();
@@ -15,6 +16,7 @@ export default function UploadImageForm() {
     formData.append("file", image);
 
     const response = await fetch("http://localhost:3000/api/uploadImage", {
+      cache: 'no-store',
       method: "POST",
       body: formData,
     });
@@ -22,6 +24,7 @@ export default function UploadImageForm() {
     if (response.ok) {
       const imageUrl = await response.json();
       console.log("Image uploaded successfully:", imageUrl);
+      router.push("/main");
     } else {
       //const imageUrl = await response.json();
       console.error("Image upload failed:", response.statusText);
