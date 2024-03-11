@@ -8,13 +8,13 @@ import { useState } from "react";
 export default function TestCart() {
   const { cart, addToCart, removeFromCart } = useStore();
 
-  console.log("cart length ", cart.length);
-  console.log("cart ", cart);
+  console.log("cart ", cart.length);
 
   const header = (url) => {
     //console.log("url ", url);
     return (
       <div className="border border-red-400 w-60 h-60">
+        {/* <Image src={url} alt="Card" width={300} height={300} /> */}
         <img
           className="w-full h-full object-cover"
           alt="Card"
@@ -125,55 +125,62 @@ export default function TestCart() {
               isHovered ? "block" : "hidden"
             }`}
           >
-            {cart.map((e, i) => (
-              <div key={i} className="flex items-center mb-2">
-                <img
-                  src={e.url}
-                  alt={e.name}
-                  className="w-10 h-10 object-cover mr-2"
-                />
-                <div>
-                  <p className="text-sm font-semibold">{e.name}</p>
-                  <p className="text-sm text-gray-500">
-                    {e.quantity} x {e.price}
-                  </p>
+            {cart.length === 0 ? (
+              <div className="flex flex-col items-center">
+                <div className="pi pi-ban" style={{ fontSize: "2.5rem" }}></div>
+                <div className="text-xl">ยังไม่มีสินค้าในรถเข็น</div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center">
+                <div className="text-xs">สินค้าที่เพิ่งเพิ่มเข้าไป</div>
+              </div>
+            )}
+            {cart
+              .slice() // สร้างสำเนาของ cart
+              .sort((a, b) => b.name.localeCompare(a.name)) // เรียงลำดับตามชื่อแบบลดหลัง
+              .slice(0, 5) // เลือกเฉพาะ 5 รายการแรก
+              .map((e, i) => (
+                <div key={i} className="flex items-center mb-2">
+                  <img
+                    src={e.url}
+                    alt={e.name}
+                    className="w-10 h-10 object-cover mr-2"
+                  />
+                  <div>
+                    <p className="text-sm font-semibold">{e.name}</p>
+                    <p className="text-sm text-gray-500">
+                      {e.quantity} x {e.price}
+                    </p>
+                    {/* <button onClick={() => handleRemoveFromCart(i)}>ลบ</button> */}
+                  </div>
+                </div>
+              ))}
+
+            {cart.length === 0 ? (
+              ""
+            ) : (
+              <div className="flex flex-col items-center">
+                <div className="text-xs">
+                  รายการสินค้าทั้งหมด {cart.length} รายการ
                 </div>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
 
       <div className="flex justify-between flex-wrap  h-auto gap-10">
         {productItem.map((e, i) => (
-          <div class="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
-            <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96">
-              <img
-                src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
-                alt="card-image"
-                class="object-cover w-full h-full"
-              />
-            </div>
-            <div class="p-6">
-              <div class="flex items-center justify-between mb-2">
-                <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-                  {e.name}
-                </p>
-                <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-                  ฿{e.price}
-                </p>
-              </div>
-            </div>
-            <div class="p-6 pt-0">
-              <button
-                class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg shadow-gray-900/10 hover:shadow-gray-900/20 focus:opacity-[0.85] active:opacity-[0.85] active:shadow-none block w-full bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
-                type="button"
-                onClick={() => handleAddToCart(e)}
-              >
-                Add to Cart
-              </button>
-            </div>
-          </div>
+          <Card
+            key={i}
+            title={e.name}
+            subTitle={"ราคา :" + e.price}
+            footer={footer(e.name, e.price, e.url)}
+            header={header(e.url)}
+            //className="md:w-25rem"
+          >
+            <p className="m-0">Name</p>
+          </Card>
         ))}
       </div>
       <div>
