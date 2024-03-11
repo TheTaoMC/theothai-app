@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { async } from "./api/route";
 import Container from "./components/Container";
+import TestCart from "./testCart/page";
 
 export default function Home() {
   const [datas, setDatas] = useState([]);
@@ -31,11 +32,7 @@ export default function Home() {
     <>
       <div>
         <Container>
-          form
-          <div>เข้าสู่ระบบ</div>
-          <div>ชื่อผู้ใช้งาน</div>
-          <div>รหัสผ่าน</div>
-          <div> input </div>
+          <TestCart />
         </Container>
       </div>
     </>
