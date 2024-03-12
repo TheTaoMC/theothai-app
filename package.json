@@ -16,11 +16,13 @@
     "@mui/material": "^5.15.12",
     "mssql": "^10.0.2",
     "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.9.2",
     "next": "^14.0.0",
     "primeicons": "^6.0.1",
     "primereact": "^10.5.1",
     "react": "^18",
     "react-dom": "^18",
+    "serverless-mysql": "^1.5.5",
     "sharp": "^0.33.2",
     "zustand": "^4.5.2"
   },

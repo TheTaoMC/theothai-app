@@ -1,3 +1,24 @@
 {
-  "files.autoSave": "afterDelay"
+  "files.autoSave": "onWindowChange",
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Enabled",
+        "ssl": {
+          "ca": "",
+          "crl": "C:\\Users\\Service01\\Downloads\\ca.pem"
+        }
+      },
+      "previewLimit": 50,
+      "server": "mysql-151d0f41-manamanote-4511.a.aivencloud.com",
+      "driver": "MySQL",
+      "name": "eShopDB",
+      "database": "eShopDB",
+      "username": "avnadmin",
+      "password": "AVNS_o1QaeSJixGhzwhTFGMt",
+      "connectString": "mysql://avnadmin:AVNS_o1QaeSJixGhzwhTFGMt@mysql-151d0f41-manamanote-4511.a.aivencloud.com:17891/defaultdb?ssl-mode=REQUIRED",
+      "connectionTimeout": 999999
+    }
+  ]
 }
