@@ -1,9 +1,0 @@
-DB_HOST=theothai.com
-DB_PORT=3306
-DB_USER=theoth_taotheo
-DB_PASSWORD=A7%r9b8d2
-DB_DATABASE=theoth_test001DB
-
-DB_SSL_MODE=REQUIRED
-DB_SSL_CA=@/ssl/ca.pem
-DATABASE_URL=mysql://avnadmin:AVNS_o1QaeSJixGhzwhTFGMt@mysql-151d0f41-manamanote-4511.a.aivencloud.com:17891/defaultdb?ssl-mode=REQUIRED
