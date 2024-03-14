@@ -1,5 +1,4 @@
 import { NextResponse, NextRequest } from "next/server";
-//const { pool, } = require('@/db/dbMysql.config');
 import pool from '@/db/dbMysql.config'
 
 export async function GET() {
@@ -7,13 +6,18 @@ export async function GET() {
     try {
         const connection = await pool.getConnection();
 
-        const results = await connection.query(`SELECT * FROM products`);
+        const [results] = await connection.query(`
+        SELECT *,product.ProductID,product.ProductName
+        FROM weight
+        INNER JOIN product ON weight.ProductDataID=product.DataID
+        ORDER BY WeightTimeIn DESC
+        `);
 
         console.log(results);
         //const [rows] = await pool.query(`SELECT * FROM products`);
 
         //return NextResponse.json({ data: results.recordset }, { status: 201 });
-        return NextResponse.json({ data: results.recordset }, { status: 201 });
+        return NextResponse.json({ data: results }, { status: 201 });
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
