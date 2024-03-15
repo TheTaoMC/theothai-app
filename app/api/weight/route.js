@@ -4,16 +4,23 @@ import pool from '@/db/dbMysql.config'
 export async function GET() {
 
     try {
-        const connection = await pool.getConnection();
+        //const connection = await pool.getConnection();
 
-        const [results] = await connection.query(`
-        SELECT *,product.ProductID,product.ProductName
-        FROM weight
-        INNER JOIN product ON weight.ProductDataID=product.DataID
+        const [results] = await pool.query(`
+
+        SELECT * 
+        FROM weight LEFT JOIN product ON weight.ProductDataID = product.DataID
+                        LEFT JOIN transporter ON weight.TransporterDataID = transporter.DataID
+                        LEFT JOIN driver ON weight.DriverDataID = driver.DataID
+                        LEFT JOIN weighttype ON weight.WeightTypeDataID = weighttype.DataID
+            WHERE weight.WeightOut IS NULL
+        
+        
         ORDER BY WeightTimeIn DESC
         `);
 
-        console.log(results);
+        console.log('Load Data...');
+        //console.log(results);
         //const [rows] = await pool.query(`SELECT * FROM products`);
 
         //return NextResponse.json({ data: results.recordset }, { status: 201 });

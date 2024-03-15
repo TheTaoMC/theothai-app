@@ -6,7 +6,7 @@ import Content from "./ui/Content";
 function TTW2pDashBoard() {
   return (
     <>
-      <div>
+      <div className="max-h-[90vh]">
         <Herder />
         <Content />
         <Footer />

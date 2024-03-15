@@ -20,5 +20,6 @@
       "connectString": "mysql://avnadmin:AVNS_o1QaeSJixGhzwhTFGMt@mysql-151d0f41-manamanote-4511.a.aivencloud.com:17891/defaultdb?ssl-mode=REQUIRED",
       "connectionTimeout": 999999
     }
-  ]
+  ],
+  "editor.formatOnSave": true
 }
