@@ -10,8 +10,15 @@ function Content() {
   //console.log(datas);
   const getData = async () => {
     const results = await fetch("http://localhost:3000/api/weight");
+
+    if (!results.ok) {
+      console.log("Network response was not ok");
+      return;
+    }
+
     const resultsJson = await results.json();
     //console.log(datas);
+
     setDatas(resultsJson.data);
   };
 
@@ -75,7 +82,7 @@ function Content() {
             ))}
           </DataTable>
           <div className="text-center text-2xl font-bold bg-blue-gray-300 p-4 rounded-b-2xl">
-            จำนวนรถค้างในโรงงาน {datas.length} รายการ
+            จำนวนรถค้างในโรงงาน {datas.length || 0} รายการ
           </div>
         </div>
       </div>
