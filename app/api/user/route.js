@@ -1,25 +1,29 @@
 import { NextResponse, NextRequest } from "next/server";
-const { pool } = require('../../../db/db.config');
+import pool from '@/db/dbMysql.config'
 
 export async function GET() {
 
     try {
-        await pool.connect();
+        //const connection = await pool.getConnection();
 
-        const results = await pool.request().query(`
-        Select UserLogIn.DataID, UserLogIn.LogInName, UserLogIn.LogInPassword, UserRole.UserRoleCode
-        From UserLogIn, UserRole
-                    `);
+        const [results] = await pool.query(`
 
-        return NextResponse.json({ data: results.recordset }, { status: 201 });
+        SELECT * 
+        FROM user
+        `);
+
+        console.log('Load Data...');
+        //console.log(results);
+        //const [rows] = await pool.query(`SELECT * FROM products`);
+
+        //return NextResponse.json({ data: results.recordset }, { status: 201 });
+        return NextResponse.json({ data: results }, { status: 201 });
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
-    } finally {
-        pool.close();
     }
 }
 
-export async function POST(req, res) {
+/* export async function POST(req, res) {
     const { LogInName, LogInPassword } = await req.json()
 
     console.log(LogInName);
@@ -51,4 +55,4 @@ export async function POST(req, res) {
     } finally {
         pool.close();
     }
-}
+} */
