@@ -1,5 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import pool from '@/db/dbMysql.config'
+import bcrypt from 'bcrypt'
+const saltRounds = 10;
 
 export async function GET() {
 
@@ -27,7 +29,8 @@ export async function POST(req, res) {
     const body = await req.json();
     console.log(body);
     const { username, password, email, f_name, l_name, tel, created_at } = body;
-    const values = [username, password, email, f_name, l_name, tel, created_at];
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const values = [username, hashedPassword, email, f_name, l_name, tel, created_at];
 
     try {
 

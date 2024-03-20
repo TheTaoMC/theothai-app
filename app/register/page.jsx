@@ -236,6 +236,16 @@ function Register() {
             >
               {registerLogin ? "กำลังดำเนินการ" : "สมัครสมาชิก"}
             </Button>
+
+            <div className="mt-4  text-white/50 flex justify-end flex-wrap">
+              <div>หากมีบัญชีผู้ใช้แล้ว คุณสามารถ</div>
+              <div
+                className="text-blue-500 cursor-pointer ml-2"
+                onClick={() => router.push("/login")}
+              >
+                เข้าสู่ระบบ
+              </div>
+            </div>
           </form>
         </div>
       </Container>
