@@ -1,19 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Container from "../components/Container";
 import Herder from "../components/Herder";
 import Footer from "../components/Footer";
-import { Input, Card, Button } from "@material-tailwind/react";
+import { Toast } from "primereact/toast";
+import { Input, Card, Button, Alert } from "@material-tailwind/react";
+
 import { useRouter } from "next/navigation";
 
 function Register() {
+  const toast = useRef(null);
   const router = useRouter();
+  const [registerLogin, setRegisterLogin] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     confirmpassword: "",
-    email: "",
-    confirmemail: "",
+    email: "@",
+    confirmemail: "@",
     f_name: "",
     l_name: "",
     tel: "",
@@ -22,36 +26,86 @@ function Register() {
 
   //console.log(formData);
 
+  //toast
+  const showSuccess = (text) => {
+    toast.current.show({
+      severity: "success",
+      summary: "สำเร็จ",
+      detail: text,
+      baseZIndex: 5,
+      life: 3000,
+    });
+  };
+  const showError = (text) => {
+    toast.current.show({
+      //className: "bg-red-500/50 text-white",
+      severity: "error",
+      summary: "แจ้งเตือน",
+      detail: text,
+      life: 3000,
+    });
+  };
+  //toast
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let text;
+    if (formData.f_name === "") {
+      text = "กรุณากรอกชื่อ";
+      showError(text);
+      return;
+    }
+    if (formData.l_name === "") {
+      text = "กรุณากรอกนามสกุล";
+      showError(text);
+      return;
+    }
     if (formData.username === "") {
-      return alert("กรุณาใส่ชื่อผู้ใช้");
+      text = "กรุณากรอกชื่อผู้ใช้";
+      showError(text);
+      return;
     }
     if (formData.password === "") {
-      return alert("กรุณาใส่รหัสผ่าน");
+      text = "กรุณากรอกรหัสผ่าน";
+      showError(text);
+      return;
     }
     if (formData.confirmpassword === "") {
-      return alert("กรุณาใส่ยืนยันรหัสผ่าน");
+      text = "กรุณากรอกยืนยันรหัสผ่าน";
+      showError(text);
+      return;
     }
     if (formData.email === "") {
-      return alert("กรุณาใส่อีเมล");
+      text = "กรุณากรอกอีเมล";
+      showError(text);
+      return;
     }
     if (formData.confirmemail === "") {
-      return alert("กรุณาใส่ยืนยันอีเมล");
+      text = "กรุณากรอกยืนยันอีเมล";
+      showError(text);
+      return;
     }
     if (formData.tel === "") {
-      return alert("กรุณาใส่เบอร์โทรศัพท์");
+      text = "กรุณากรอกเบอร์โทรศัพท์";
+      showError(text);
+      return;
     }
     if (formData.password !== formData.confirmpassword) {
-      return alert("รหัสผ่านไม่ตรงกัน");
+      text = "รหัสผ่านไม่ตรงกัน";
+      showError(text);
+      return;
     }
     if (formData.email !== formData.confirmemail) {
-      return alert("อีเมลไม่ตรงกัน");
+      text = "อีเมลไม่ตรงกัน";
+      showError(text);
+      return;
     }
+
+    setRegisterLogin(true);
 
     // ส่งข้อมูลไปยังเซิร์ฟเวอร์เพื่อบันทึกในฐานข้อมูล
     const response = await fetch("http://localhost:3000/api/register", {
@@ -68,22 +122,33 @@ function Register() {
       const data = await response.json();
       console.log(data);
       if (data.mss === "Usernamealready") {
-        return alert("ชื่อผู้ใช้มีอยู่แล้ว");
+        setRegisterLogin(false);
+        text = "ชื่อผู้ใช้มีอยู่แล้ว";
+        return showError(text);
       }
       if (data.mss === "Emailalready") {
-        return alert("อีเมลมีอยู่แล้ว");
+        setRegisterLogin(false);
+        text = "อีเมลมีอยู่แล้ว";
+        return showError(text);
       }
-
       return;
     }
     const data = await response.json();
-    router.push("/login");
+
+    // ส่งไปยังหน้า login
+    //const routerlogin = router.push("/login");
+    text = "สมัครสําเร็จ กำลังไปหน้า Login";
+    showSuccess(text);
+    const timer = setTimeout(() => {
+      router.push("/login");
+    }, 3000);
   };
   return (
     <>
+      <Toast ref={toast} />
       <Herder />
       <Container>
-        <div className="p-4  bg-gray-900/50 rounded-xl min-w-[15rem] max-w-[25rem] mx-auto my-4">
+        <div className=" p-4  bg-gray-900/50 rounded-xl min-w-[15rem] max-w-[25rem] mx-auto my-4">
           <div className="text-2xl font-bold text-center text-white">
             สมัครสมาชิก
           </div>
@@ -163,14 +228,13 @@ function Register() {
               value={formData.tel}
               onChange={handleChange}
             />
-            <Button type="submit" size="md" color="blue">
-              สมัครสมาชิก
-            </Button>
-            <Button variant="outlined" loading={true}>
-              Loading
-            </Button>
-            <Button variant="outlined" loading={true} color="blue">
-              Loading
+            <Button
+              type="submit"
+              size="md"
+              color="blue"
+              loading={registerLogin ? true : false}
+            >
+              {registerLogin ? "กำลังดำเนินการ" : "สมัครสมาชิก"}
             </Button>
           </form>
         </div>
