@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import Container from "../components/Container";
 import Herder from "../components/Herder";
 import Footer from "../components/Footer";
@@ -119,6 +120,7 @@ function Register() {
     console.log(response);
     if (!response.ok) {
       console.log("Network response was not ok");
+      setRegisterLogin(false);
       const data = await response.json();
       console.log(data);
       if (data.mss === "Usernamealready") {
@@ -140,7 +142,8 @@ function Register() {
     text = "สมัครสําเร็จ กำลังไปหน้า Login";
     showSuccess(text);
     const timer = setTimeout(() => {
-      router.push("/login");
+      //router.push("/login");
+      signIn();
     }, 3000);
   };
   return (

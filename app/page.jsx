@@ -5,6 +5,8 @@ import Image from "next/image";
 import { async } from "./api/route";
 import Container from "./components/Container";
 import TestCart from "./testCart/page";
+import Herder from "./components/Herder";
+import Footer from "./components/Footer";
 
 export default function Home() {
   const [datas, setDatas] = useState([]);
@@ -31,9 +33,11 @@ export default function Home() {
   return (
     <>
       <div>
+        <Herder />
         <Container>
           <TestCart />
         </Container>
+        <Footer />
       </div>
     </>
   );

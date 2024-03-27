@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import Container from "../components/Container";
 import Herder from "../components/Herder";
 import Footer from "../components/Footer";
@@ -9,12 +10,15 @@ import { Input, Card, Button, Alert } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 
 function Login() {
+  const { data: session } = useSession();
   const toast = useRef(null);
   const router = useRouter();
   const [login, setLogin] = useState(false);
   const [formData, setFormData] = useState({
     usernameoremail: "",
     password: "",
+    redirect: false,
+    callbackUrl: "/main",
     login_last: new Date(),
   });
   //toast
@@ -101,6 +105,41 @@ function Login() {
       router.push("/main");
     }, 3000);
   };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    let text;
+    if (formData.usernameoremail === "") {
+      text = "กรุณากรอกชื่อผู้ใช้งาน หรือ email";
+      showError(text);
+      return;
+    }
+
+    if (formData.password === "") {
+      text = "กรุณากรอกรหัสผ่าน";
+      showError(text);
+      return;
+    }
+
+    setLogin(true);
+    try {
+      const res = await signIn("credentials", formData);
+      console.log("res ", res);
+
+      if (res.status === 401) {
+        setLogin(false);
+        text = "ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง";
+        return showError(text);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    const timer = setTimeout(() => {
+      setLogin(false);
+      router.push("/main");
+    }, 3000);
+  };
   return (
     <>
       <Toast ref={toast} />
@@ -111,7 +150,7 @@ function Login() {
             เข้าสู่ระบบ
           </div>
           <form
-            onSubmit={handleSubmit}
+            onSubmit={handleLogin}
             className="flex flex-col gap-2 p-2 min-w-[15rem] max-w-[25rem] m-auto"
           >
             <Input

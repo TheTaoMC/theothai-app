@@ -1,16 +1,15 @@
 import React from "react";
-import Link from 'next/link'
-import UploadImageForm from "../components/UploadImageForm";
+import Footer from "../components/Footer";
+import Herder from "../components/Herder";
+import SessionMain from "./SessionMain"; // Server Component
+import { useSession, signIn, signOut } from "next-auth/react";
 
-function Main() {
+export default function Home() {
   return (
-    <div className='flex flex-col'>
-      <div><Link href="/monitoring">Monitoring</Link></div>
-      <div><Link href="/check">Check</Link></div>
-      <div><Link href="/management">Management</Link></div>
-      <UploadImageForm />
-    </div>
+    <>
+      {/* <Herder /> */}
+      <SessionMain />
+      <Footer />
+    </>
   );
 }
-
-export default Main;
