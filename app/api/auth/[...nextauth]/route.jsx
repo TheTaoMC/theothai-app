@@ -40,7 +40,7 @@ const handler = NextAuth({
   pages: {
     signIn: "/login",
     //error: "/login",
-    signOut: "http://localhost:3000/",
+    //signOut: "http://localhost:3000/",
   },
   callbacks: {
     async jwt({ token, user }) {

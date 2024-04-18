@@ -53,7 +53,7 @@ function CartIcon() {
                 <div>
                   <p className="text-sm font-semibold">{e.name}</p>
                   <p className="text-sm text-gray-500">
-                    {e.quantity} x {e.price}
+                    {e.quantity} x {e.price} = {e.price * e.quantity}
                   </p>
                   {/* <button onClick={() => handleRemoveFromCart(i)}>ลบ</button> */}
                 </div>

@@ -6,13 +6,47 @@ export async function GET() {
   try {
     const connection = await pool.getConnection();
 
-    const results = await connection.query(`SELECT * FROM products`);
+    const [results, f] = await connection.query(`SELECT * FROM products`);
 
     //console.log(results);
     //const [rows] = await pool.query(`SELECT * FROM products`);
 
     //return NextResponse.json({ data: results.recordset }, { status: 201 });
-    return NextResponse.json({ data: results.recordset }, { status: 201 });
+    return NextResponse.json(results, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function POST(req, res) {
+  const { productName, price } = await req.json();
+
+  console.log(productName);
+  console.log(price);
+
+  // Check if productName and price are defined
+  if (!productName || !price) {
+    return NextResponse.json(
+      { error: "productName and price are required" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    await pool.connect();
+
+    const results = await pool.query(
+      `
+          INSERT INTO Products (ProductName, Price)
+          VALUES (?, ?);
+      `,
+      [productName, price]
+    );
+
+    return NextResponse.json(
+      { message: "Product added successfully" },
+      { status: 201 }
+    );
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
